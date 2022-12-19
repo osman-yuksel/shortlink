@@ -16,9 +16,6 @@ export const shortlinkRouter = router({
             slug: {
               equals: input.slug,
             }
-          },
-          orderBy: {
-            createdAt: "desc",
           }
         });
       } catch (error) {
