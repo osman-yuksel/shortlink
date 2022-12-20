@@ -9,6 +9,16 @@ const Home: NextPage = () => {
   // });
   // // if (isLoading) return <div>Fetching url for youtube shortlink...</div>;
 
+  return (
+    <div>
+      <Form />
+    </div>
+  );
+};
+
+export default Home;
+
+const Form = () => {
   const [formInput, setFormInput] = useState<string>("");
   const mutation = trpc.shortlink.createlink.useMutation();
 
@@ -37,5 +47,3 @@ const Home: NextPage = () => {
     </div>
   );
 };
-
-export default Home;
