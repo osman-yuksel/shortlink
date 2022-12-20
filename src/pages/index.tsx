@@ -10,7 +10,7 @@ const Home: NextPage = () => {
   // // if (isLoading) return <div>Fetching url for youtube shortlink...</div>;
 
   return (
-    <div>
+    <div className="min-w-screen flex min-h-screen justify-center">
       <Form />
     </div>
   );
@@ -24,26 +24,58 @@ const Form = () => {
 
   const handleSubmit = async (event: React.SyntheticEvent) => {
     event.preventDefault();
-    mutation.mutate({ url: formInput });
+    if (formInput) {
+      mutation.mutate({ url: formInput });
+    }
   };
   return (
-    <div>
-      <form onSubmit={handleSubmit} method="POST">
-        <label htmlFor="long-url">
-          Enter the Long Link:
-          <input
-            id="long-url"
-            type="text"
-            placeholder="here"
-            onChange={(e: React.FormEvent<HTMLInputElement>) => {
-              setFormInput(e.currentTarget.value);
-            }}
-          ></input>
-        </label>
-        <button type="submit">Get short link</button>
+    <div className="m-2 w-screen max-w-3xl">
+      <form onSubmit={handleSubmit} method="POST" className="flex flex-col">
+        <div className="group/item flex  flex-col rounded-lg border-neutral-800 bg-neutral-800 pt-1 pl-1 pb-3 pr-3 text-lg shadow-lg">
+          <label
+            htmlFor="long-url"
+            className="w-full rounded-md bg-white p-4 hover:cursor-text"
+          >
+            <input
+              className="w-full rounded-t-md border-b-4 border-inherit p-2 text-3xl !outline-none transition-all focus:!border-red-600 group-hover/item:border-red-400"
+              id="long-url"
+              type="text"
+              placeholder="Enter the long-link here"
+              onChange={(e: React.FormEvent<HTMLInputElement>) => {
+                setFormInput(e.currentTarget.value);
+              }}
+            ></input>
+          </label>
+        </div>
+        <div className="group/button">
+          <div className="mt-2 flex justify-center rounded-md bg-neutral-800 pt-1 pl-1 pb-2 pr-2 transition-all group-active/button:pb-1 group-active/button:text-red-600">
+            <button
+              className="h-full w-full rounded-sm bg-white p-2 text-2xl transition-all group-active/button:pt-3"
+              type="submit"
+              disabled={mutation.isLoading}
+            >
+              Get short link
+            </button>
+          </div>
+        </div>
       </form>
-
-      <div>{mutation.data?.slug}</div>
+      <div className="mt-2 flex justify-center rounded-md bg-neutral-800 pt-1 pl-1 pb-2 pr-2">
+        <div className=" flex justify-center h-full w-full rounded-sm bg-white text-2xl">
+          {mutation.isLoading ? (
+            <div>Please wait...</div>
+          ) : mutation.error ? (
+            <div>An unexpected error happened!</div>
+          ) : mutation.data ? (
+            <Link href={`/${mutation.data.slug}`}>
+              {window
+                ? `${window.location.hostname}/${mutation.data.slug}`
+                : ""}
+            </Link>
+          ) : (
+            <div></div>
+          )}
+        </div>
+      </div>
     </div>
   );
 };
