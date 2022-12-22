@@ -69,18 +69,18 @@ const Form = () => {
             ) : mutation.error ? (
               <div>An unexpected error happened!</div>
             ) : (
-              <div className="w-full flex justify-between">
-                <div className="w-12 ml-4"></div>
+              <div className="flex w-full justify-between">
+                <div className="ml-4 w-12"></div>
                 <Link href={`/${mutation.data.slug}`}>
                   {window
                     ? `${window.location.hostname}/${mutation.data.slug}`
                     : ""}
                 </Link>{" "}
                 <button
-                  className={`w-12 mr-4 mb-1 ${copied ? "text-green-500" : ""}`}
+                  className={`mr-4 mb-1 w-12 ${copied ? "text-green-500" : ""}`}
                   onClick={() => {
                     navigator.clipboard.writeText(
-                      `${window.location.hostname}/${mutation.data?.slug}`
+                      `https://${window.location.hostname}/${mutation.data?.slug}`
                     );
                     setCopied(true);
                   }}
