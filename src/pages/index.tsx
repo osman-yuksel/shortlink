@@ -20,6 +20,7 @@ export default Home;
 
 const Form = () => {
   const [formInput, setFormInput] = useState<string>("");
+  const [copied, setCopied] = useState<boolean>(false);
   const mutation = trpc.shortlink.createlink.useMutation();
 
   const handleSubmit = async (event: React.SyntheticEvent) => {
@@ -27,6 +28,7 @@ const Form = () => {
     if (formInput) {
       mutation.mutate({ url: formInput });
     }
+    setCopied(false);
   };
   return (
     <div className="m-2 w-screen max-w-3xl">
@@ -54,28 +56,44 @@ const Form = () => {
               type="submit"
               disabled={mutation.isLoading}
             >
-              Get short link
+              Get your short link
             </button>
           </div>
         </div>
       </form>
-      <div className="mt-2 flex justify-center rounded-md bg-neutral-800 pt-1 pl-1 pb-2 pr-2">
-        <div className=" flex justify-center h-full w-full rounded-sm bg-white text-2xl">
-          {mutation.isLoading ? (
-            <div>Please wait...</div>
-          ) : mutation.error ? (
-            <div>An unexpected error happened!</div>
-          ) : mutation.data ? (
-            <Link href={`/${mutation.data.slug}`}>
-              {window
-                ? `${window.location.hostname}/${mutation.data.slug}`
-                : ""}
-            </Link>
-          ) : (
-            <div></div>
-          )}
+      {mutation.data ? (
+        <div className="mt-2 flex justify-center rounded-md bg-neutral-800 pt-1 pl-1 pb-2 pr-2">
+          <div className=" flex h-full w-full justify-center rounded-sm bg-white text-2xl">
+            {mutation.isLoading ? (
+              <div>Please wait...</div>
+            ) : mutation.error ? (
+              <div>An unexpected error happened!</div>
+            ) : (
+              <div className="w-full flex justify-between">
+                <div className="w-12 ml-4"></div>
+                <Link href={`/${mutation.data.slug}`}>
+                  {window
+                    ? `${window.location.hostname}/${mutation.data.slug}`
+                    : ""}
+                </Link>{" "}
+                <button
+                  className={`w-12 mr-4 mb-1 ${copied ? "text-green-500" : ""}`}
+                  onClick={() => {
+                    navigator.clipboard.writeText(
+                      `${window.location.hostname}/${mutation.data?.slug}`
+                    );
+                    setCopied(true);
+                  }}
+                >
+                  copy
+                </button>
+              </div>
+            )}
+          </div>
         </div>
-      </div>
+      ) : (
+        <></>
+      )}
     </div>
   );
 };
