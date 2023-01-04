@@ -1,6 +1,7 @@
 import { type NextPage } from "next";
 import { trpc } from "../utils/trpc";
 import Link from "next/link";
+import Head from "next/head";
 import { useState } from "react";
 
 const Home: NextPage = () => {
@@ -10,9 +11,14 @@ const Home: NextPage = () => {
   // // if (isLoading) return <div>Fetching url for youtube shortlink...</div>;
 
   return (
-    <div className="min-w-screen flex flex-col min-h-screen items-center">
-      <h1 className="text-6xl my-5">Short-Link</h1>
-      <Form />
+    <div>
+      <Head>
+        <link rel="shortcut icon" href="/logo.png" />
+      </Head>
+      <div className="min-w-screen flex min-h-screen flex-col items-center">
+        <h1 className="my-5 text-6xl">Short-Link</h1>
+        <Form />
+      </div>
     </div>
   );
 };
@@ -62,7 +68,7 @@ const Form = () => {
           </div>
         </div>
       </form>
-      {(mutation.data || mutation.isLoading) ? (
+      {mutation.data || mutation.isLoading ? (
         <div className="mt-2 flex justify-center rounded-md bg-neutral-800 pt-1 pl-1 pb-2 pr-2">
           <div className=" flex h-full w-full justify-center rounded-sm bg-white text-2xl">
             {mutation.isLoading ? (
@@ -70,15 +76,15 @@ const Form = () => {
             ) : mutation.error ? (
               <div>An unexpected error happened!</div>
             ) : (
-              <div className="w-full flex justify-between">
-                <div className="w-12 ml-4"></div>
+              <div className="flex w-full justify-between">
+                <div className="ml-4 w-12"></div>
                 <Link href={`/${mutation.data?.slug}`}>
                   {window
                     ? `${window.location.hostname}/${mutation.data?.slug}`
                     : ""}
                 </Link>{" "}
                 <button
-                  className={`w-12 mr-4 mb-1 ${copied ? "text-green-500" : ""}`}
+                  className={`mr-4 mb-1 w-12 ${copied ? "text-green-500" : ""}`}
                   onClick={() => {
                     navigator.clipboard.writeText(
                       `https://${window.location.hostname}/${mutation.data?.slug}`
