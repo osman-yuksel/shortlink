@@ -10,7 +10,8 @@ const Home: NextPage = () => {
   // // if (isLoading) return <div>Fetching url for youtube shortlink...</div>;
 
   return (
-    <div className="min-w-screen flex min-h-screen justify-center">
+    <div className="min-w-screen flex flex-col min-h-screen items-center">
+      <h1 className="text-6xl my-5">Short-Link</h1>
       <Form />
     </div>
   );
