@@ -3,6 +3,7 @@ import { trpc } from "../utils/trpc";
 import Link from "next/link";
 import Head from "next/head";
 import { useState } from "react";
+import { QRCodeSVG } from "qrcode.react";
 
 const Home: NextPage = () => {
   // const { data: url, isLoading } = trpc.shortlink.getlink.useQuery({
@@ -76,24 +77,34 @@ const Form = () => {
             ) : mutation.error ? (
               <div>An unexpected error happened!</div>
             ) : (
-              <div className="flex w-full justify-between">
-                <div className="ml-4 w-12"></div>
-                <Link href={`/${mutation.data?.slug}`}>
-                  {window
-                    ? `${window.location.hostname}/${mutation.data?.slug}`
-                    : ""}
-                </Link>{" "}
-                <button
-                  className={`mr-4 mb-1 w-12 ${copied ? "text-green-500" : ""}`}
-                  onClick={() => {
-                    navigator.clipboard.writeText(
-                      `https://${window.location.hostname}/${mutation.data?.slug}`
-                    );
-                    setCopied(true);
-                  }}
-                >
-                  copy
-                </button>
+              <div className="flex w-full flex-col justify-center">
+                <div className="flex w-full justify-between">
+                  <div className="ml-4 w-12"></div>
+                  <Link href={`/${mutation.data?.slug}`}>
+                    {window
+                      ? `${window.location.hostname}/${mutation.data?.slug}`
+                      : ""}
+                  </Link>{" "}
+                  <button
+                    className={`mr-4 mb-1 w-12 ${
+                      copied ? "text-green-500" : ""
+                    }`}
+                    onClick={() => {
+                      navigator.clipboard.writeText(
+                        `${window.location.hostname}/${mutation.data?.slug}`
+                      );
+                      setCopied(true);
+                    }}
+                  >
+                    copy
+                  </button>
+                </div>
+                <div className="mt-2 flex w-full justify-center border-t-2 border-black py-2">
+                  <QRCodeSVG
+                    value={`${window.location.hostname}/${mutation.data?.slug}`}
+                    size={256}
+                  />
+                </div>
               </div>
             )}
           </div>
