@@ -78,8 +78,8 @@ const Form = () => {
               <div>An unexpected error happened!</div>
             ) : (
               <div className="flex w-full flex-col justify-center">
-                <div className="flex w-full justify-between">
-                  <div className="ml-4 w-12"></div>
+                <div className="flex w-full items-center flex-col sm:flex-row sm:justify-between">
+                  <div className="ml-4 w-12 h-0"></div>
                   <Link href={`/${mutation.data?.slug}`}>
                     {window
                       ? `${window.location.hostname}/${mutation.data?.slug}`
