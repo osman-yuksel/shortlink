@@ -15,6 +15,7 @@ const Home: NextPage = () => {
     <div>
       <Head>
         <link rel="shortcut icon" href="/logo.png" />
+        <title>Short-Link</title>
       </Head>
       <div className="min-w-screen flex min-h-screen flex-col items-center">
         <h1 className="my-5 text-6xl">Short-Link</h1>
